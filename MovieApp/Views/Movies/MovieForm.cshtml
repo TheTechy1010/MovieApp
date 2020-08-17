@@ -1,0 +1,88 @@
+﻿@model MovieApp.ViewModels.MovieFormViewModel
+@{
+    ViewBag.Title = Model.Heading;
+}
+@using System
+<h2 class="font-weight-bold">@Model.Heading</h2>
+<small>Add a new movie to the database.</small>
+<hr />
+<div class="form-group">
+    @{ 
+        string image = "";
+    }
+    @if (Model.ImageString == null)
+    {
+        image = "/Content/noPoster.png";
+    }
+    else
+    {
+        image = "data:image/jpg;base64," + @Model.ImageString;
+
+    }
+    <img class="d-block mx-auto" src="@image" style="height:200px;width:150px;" />
+</div>
+@using (Html.BeginForm(Model.Action, "Movies", FormMethod.Post, new { autocomplete = "off", @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Genre)
+                @Html.DropDownListFor(m => m.Genre, new SelectList(Model.GenList, "Value", "Text"), "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Genre, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ReleaseDate)
+                @{
+                    var date = "";
+                    if (Model.ReleaseDate.HasValue)
+                    {
+                        date = Model.ReleaseDate.Value.ToString();
+                    }
+                }
+                @Html.TextBoxFor(m => m.ReleaseDate, "dd/mm/yyyy", new { @class = "form-control date" })
+                @Html.ValidationMessageFor(m => m.ReleaseDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Price)
+                @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Poster)
+                @Html.TextBoxFor(m => m.Poster, new { @class = "form-control", type = "file" })
+                @Html.ValidationMessageFor(m => m.Poster, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Availability)
+                @Html.DropDownListFor(m => m.Availability, new SelectList(Model.AvailabilityList, "Value", "Text"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Availability, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    
+   
+    <div>
+        <button type="submit" class="btn btn-primary">@Model.Heading</button>
+    </div>
+    <a href="/Movies/AllMovies">Back to Home</a>
+}
+
+@section scripts
+{
+    <script>
+        $(".date").datepicker({
+            format: "dd/MM/yyyy",
+            autoclose: true
+        });
+    </script>
+}

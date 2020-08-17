@@ -1,0 +1,116 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<MovieApp.Models.Movie>
+@{
+    ViewBag.Title = "AllMovies";
+}
+@*<div class="container">
+        <h2 class="float-left">All Movies</h2>
+        <a class="float-right btn btn-outline-primary" href="/Movies/AddMovie">Add New Movie</a>
+    </div>*@
+<div>
+    @*<div class="container">
+        <h3>All Movies</h3>
+        <small>Manage all movies</small>
+    </div>*@
+    <div class="container">
+        @using (Html.BeginForm("AllMovies", "Movies", FormMethod.Get, new { id = "searchForm" }))
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Filter By:</label><br />
+                        <select name="filter" class="selectpicker w-100 form-control form-control-sm">
+                            <option value="">--Select--</option>
+                            <option value="0">Action</option>
+                            <option value="1">SciFi</option>
+                            <option value="2">Comedy</option>
+                            <option value="3">Drama</option>
+                            <option value="4">Thriller</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Search By:</label>
+                        <input type="text" class="form-control form-control-sm" name="searchTerm" id="searchTerm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label id="srch">Click the button below </label>
+                    <button type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm btn-block">
+                        Search
+                        <img id="loadingButton" hidden src="~/Content/Images/spinner.gif" style="height:30px;width:30px;" />
+                    </button>
+
+
+                </div>
+                <div class="col-md-3">
+                    <label>Click here to add a new movie</label>
+                    <a class="btn btn-primary btn-block btn-sm" href="/Movies/AddMovie">Add New Movie</a>
+                </div>
+            </div>
+        }
+    </div>
+    <hr />
+
+</div>
+<br />
+@if (ViewBag.Search != null)
+{
+    <h5 class="text-success">Search results for <span class="text-danger">"@ViewBag.Search"</span></h5>
+}
+@if (Model.Count == 0)
+{
+    @Html.Partial("_NoData")
+    <a href="/Movies/AllMovies" class="btn btn-group-toggle">Load All Movies</a>
+}
+
+<div class="row justify-content-center">
+    @foreach (var mov in Model)
+    {
+        <div class="col-auto p-1" style="width:16rem;">
+            <div class="film-card">
+
+                @if (mov.Price == 0)
+                {
+                    <span class="freepricetag">Free</span>
+                }
+                else
+                {
+                    <span class="pricetag">₹@mov.Price</span>
+                }
+                <a href="/Movies/Details/@mov.Id" data-rel="151" class="cover" title="@mov.Name">
+                    <img src="data:image/jpg;base64,@Convert.ToBase64String(mov.Poster)" alt="@mov.Name" style="height:250px;width:220px;" title="@mov.Name">
+                </a>
+
+                <p class="name font-weight-bold"><a href="/Movies/Details/@mov.Id" title="@mov.Name">@mov.Name</a></p>
+
+                <p class="year">@mov.ReleaseDate.ToString("yyyy")</p>
+                <p class="country">@mov.Availability</p>
+                <div style="clear:both"></div>
+            </div>
+            @*<div class="p-3 film-card">
+                    <img class="d-block mx-auto" src="data:image/jpg;base64,@Convert.ToBase64String(mov.Poster)" style="height:150px;width:100px;" />
+                    <div>
+
+                        <a class="btn btn-link" href="/Movies/Details/@mov.Id">
+                            <h5>@mov.Name</h5>
+                        </a>
+                        @if (mov.Price == 0)
+                        {
+                            <h6 class="badge badge-success">Free</h6>
+                        }
+                        else
+                        {
+                            <h6>₹@mov.Price</h6>
+                        }
+
+                    </div>
+                </div>*@
+        </div>
+    }
+</div>
+
+
+@Html.PagedListPager(Model, page => Url.Action("AllMovies", "Movies", new { page = page }))

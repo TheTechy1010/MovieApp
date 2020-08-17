@@ -1,0 +1,267 @@
+﻿:root {
+    font-size: 16px;
+    font-family: 'Open Sans';
+    --chtext-primary: #b6b6b6;
+    --chtext-secondary: #ececec;
+    --chbg-primary: #23232e;
+    --chbg-secondary: #141418;
+    --transition-speed: 600ms;
+}
+body {
+    color: black;
+    background-color: white;
+    margin-top: 5rem;
+    padding: 0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+.film-card {
+    position: relative;
+    border: 1px solid;
+    padding: 10px
+}
+
+    .film-card .cover {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding-top: 100%;
+        padding-bottom: 50%;
+        height: 0;
+        display: block;
+        border: 1px solid #696969
+    }
+
+        .film-card .cover img {
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            position: absolute;
+            z-index: 5;
+        }
+
+    .film-card .name {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 20;
+        background: rgba(0, 0, 0, .67);
+        margin: 0;
+        opacity: 0;
+        width: 100%;
+        text-align: left;
+        padding: 5% 10px 15%;
+        color: #fff;
+        font-size: 1em;
+        line-height: 1.2;
+        text-transform: uppercase;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity .3s linear;
+        -moz-transition: visibility 0s, opacity .3s linear;
+        -webkit-transition: visibility 0s, opacity .3s linear;
+        -o-transition: visibility 0s, opacity .3s linear
+    }
+
+    .film-card .country {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 20;
+        margin: 0;
+        opacity: 0;
+        width: 30%;
+        overflow: hidden;
+        height: 10%;
+        text-align: left;
+        padding: 10% 10px;
+        color: #fff;
+        font-size: .75em;
+        line-height: 1.2;
+        margin-bottom: 5px;
+        margin-left: 2px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity .3s linear;
+        -moz-transition: visibility 0s, opacity .3s linear;
+        -webkit-transition: visibility 0s, opacity .3s linear;
+        -o-transition: visibility 0s, opacity .3s linear
+    }
+
+    .film-card .year {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 20;
+        margin: 0;
+        opacity: 0;
+        width: 100%;
+        padding: 10% 10px;
+        color: #fff;
+        font-size: .75em;
+        line-height: 1.2;
+        text-align: right;
+        margin-bottom: -13px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity .3s linear;
+        -moz-transition: visibility 0s, opacity .3s linear;
+        -webkit-transition: visibility 0s, opacity .3s linear;
+        -o-transition: visibility 0s, opacity .3s linear
+    }
+
+    .film-card .season-episode {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 20;
+        margin: 0;
+        opacity: 0;
+        width: 100%;
+        padding: 10% 10px;
+        color: #fff;
+        font-size: .75em;
+        line-height: 1.2;
+        text-align: right;
+        margin-bottom: -13px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity .3s linear;
+        -moz-transition: visibility 0s, opacity .3s linear;
+        -webkit-transition: visibility 0s, opacity .3s linear;
+        -o-transition: visibility 0s, opacity .3s linear
+    }
+
+    .film-card .imdb {
+        position: absolute;
+        z-index: 20;
+        margin: 0;
+        display: inline-table;
+        text-align: right;
+        color: #fff;
+        line-height: 1;
+        top: -2px;
+        right: -4px;
+        font-weight: 700;
+        background-image: url(/themes/movies/img/icons/star.png);
+        padding: 9px 7px 5px 7px;
+        background-repeat: round;
+        font-size: .9em
+    }
+
+.pricetag {
+    position: relative;
+    width: 150px;
+    background-color: #c12;
+    font: bold 16px Sans-Serif;
+    color: #fff;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, .5);
+    padding: 1px 0;
+    top: 25px;
+    left: -10px;
+    /*-webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg)*/
+}
+
+.film-card .pricetag {
+    width: 90px;
+    height: 20px;
+    overflow: hidden;
+    position: absolute;
+    top: 13px;
+    left: 0px;
+    z-index: 20;
+}
+
+
+.freepricetag {
+    position: relative;
+    width: 150px;
+    background-color: #28a745;
+    font: bold 16px Sans-Serif;
+    color: #fff;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, .5);
+    padding: 1px 0;
+    top: 25px;
+    left: -10px;
+    /*-webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg)*/
+}
+
+.film-card .freepricetag {
+    width: 90px;
+    height: 20px;
+    overflow: hidden;
+    position: absolute;
+    top: 13px;
+    left: 0px;
+    z-index: 20;
+}
+
+.film-card:hover {
+    border: 1px solid blue;
+}
+
+    .film-card:hover .name {
+        visibility: visible;
+        opacity: 1
+    }
+
+    .film-card:hover .country {
+        visibility: visible;
+        opacity: 1
+    }
+
+    .film-card:hover .year {
+        visibility: visible;
+        opacity: 1
+    }
+
+    .film-card:hover .season-episode {
+        visibility: visible;
+        opacity: 1
+    }
+
+#content {
+    background: 0 0;
+    margin-top: 10px;
+    padding: 0 15px;
+    padding-bottom: 30px
+}
+
+.film-card .name a {
+    color: #fff;
+    transition: color .2s ease-out;
+    -moz-transition: color .2s ease-out;
+    -webkit-transition: color .2s ease-out;
+    -o-transition: color .2s ease-out
+}
+
+    .film-card .name a:hover {
+        color: #ff2432
+    }
