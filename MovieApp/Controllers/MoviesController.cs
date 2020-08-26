@@ -1,4 +1,5 @@
-﻿using MovieApp.Models;
+﻿using MovieApp.Interfaces;
+using MovieApp.Models;
 using MovieApp.ViewModels;
 using PagedList;
 using System;
@@ -16,34 +17,28 @@ namespace MovieApp.Controllers
     public class MoviesController : Controller
     {
         private MovieDbContext _db;
+        private IMovieHelper _helper;
         public MoviesController()
         {
             _db = new MovieDbContext();
+            _helper = new MovieHelper();
         }
         // GET: Movies
-        public ActionResult AllMovies(string filter,string searchTerm, int? page)
-        {   
+        public ActionResult AllMovies(string filter, string searchTerm, int? page)
+        {
             if (!string.IsNullOrWhiteSpace(filter) || !string.IsNullOrWhiteSpace(searchTerm))
             {
-                var filteredMovies = _db.Movies.AsQueryable();
-                var value = (Genre)(Convert.ToInt32(filter));
-                filteredMovies = _db.Movies.Where(m => m.Genre == value);
-                if (!string.IsNullOrWhiteSpace(searchTerm))
-                {
-                    filteredMovies = filteredMovies.Where(m => m.Name.ToLower().Contains(searchTerm.ToLower()));
-                }
-                ViewBag.Search = value.ToString() + " / " + searchTerm;
-                filteredMovies = filteredMovies.OrderByDescending(m => m.Id);
-                return View(filteredMovies.ToPagedList(page ?? 1, 8));
+                var filtered = _helper.GetFilteredMovies(filter, searchTerm, page);
+                return View(filtered);
             }
-            var all = _db.Movies.OrderByDescending(m => m.Id).ToPagedList(page ?? 1, 8);
+            var all = _helper.GetAllMovies(page);
             return View(all);
-            
+
         }
         public ActionResult AddMovie()
         {
             var viewModel = new MovieFormViewModel();
-            return View("MovieForm",viewModel);
+            return View("MovieForm", viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,7 +53,7 @@ namespace MovieApp.Controllers
                     Price = (double)viewModel.Price,
                     ReleaseDate = (DateTime)viewModel.ReleaseDate
                 };
-                movie.Poster =  CheckWallpaper(viewModel.Poster);
+                movie.Poster = CheckWallpaper(viewModel.Poster);
                 _db.Movies.Add(movie);
                 _db.SaveChanges();
                 return RedirectToAction("AllMovies", new { page = 1 });
@@ -69,22 +64,22 @@ namespace MovieApp.Controllers
         }
         public ActionResult EditMovie(int id)
         {
-            var movie = _db.Movies.Find(id);
+            var movie = _helper.GetMovie(id);
             if (movie == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             var viewModel = new MovieFormViewModel(movie.Id)
             {
-                
+
                 Genre = movie.Genre,
                 Name = movie.Name,
                 Price = movie.Price,
                 ReleaseDate = movie.ReleaseDate,
                 ImageString = Convert.ToBase64String(movie.Poster),
                 Availability = movie.Availability
-                
+
             };
-            
-            return View("MovieForm",viewModel);
+
+            return View("MovieForm", viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -102,7 +97,7 @@ namespace MovieApp.Controllers
             movie.ReleaseDate = (DateTime)viewModel.ReleaseDate;
             movie.Genre = viewModel.Genre;
             movie.Availability = viewModel.Availability;
-            if (viewModel.Poster !=null)
+            if (viewModel.Poster != null)
             {
                 movie.Poster = ConvertToByte(viewModel.Poster);
             }
